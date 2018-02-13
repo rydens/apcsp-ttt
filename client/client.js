@@ -1,9 +1,18 @@
-const Client = require('node-rest-client')
-let client = new Client.Client()
+const net = require('net')
 
-let server_ip = 'localhost'
+const server = '127.0.0.1'
+const port = '8080'
 
-client.get('172.22.241.70:8080', (data, response) => {
-  console.log(data)
-  console.log(response)
+let client = new net.Socket()
+client.connect(port, server, () => {
+  console.log(`Connected to: ${server}:${port}`)
+})
+client.write('Hello!')
+
+client.on('data', (data) => {
+  console.log(`Data: ${data}`)
+})
+
+client.on('close', () => {
+  console.log('Connection Closed')
 })

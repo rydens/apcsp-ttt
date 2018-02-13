@@ -9,6 +9,7 @@
   "author": "Ryan Densmore",
   "license": "MIT",
   "dependencies": {
-    "node-rest-client": "^3.1.0"
+    "node-rest-client": "^3.1.0",
+    "request": "^2.83.0"
   }
 }
