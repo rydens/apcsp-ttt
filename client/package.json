@@ -1,0 +1,14 @@
+{
+  "name": "ttt-client",
+  "version": "1.0.0",
+  "description": "no",
+  "main": "client.js",
+  "scripts": {
+    "test": "node client.js"
+  },
+  "author": "Ryan Densmore",
+  "license": "MIT",
+  "dependencies": {
+    "node-rest-client": "^3.1.0"
+  }
+}
