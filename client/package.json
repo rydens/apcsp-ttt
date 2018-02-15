@@ -9,7 +9,7 @@
   "author": "Ryan Densmore",
   "license": "MIT",
   "dependencies": {
-    "node-rest-client": "^3.1.0",
-    "request": "^2.83.0"
+    "gtop": "^0.1.5",
+    "readline-sync": "^1.4.8"
   }
 }
