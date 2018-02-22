@@ -22,15 +22,8 @@ func get_json(url string, target interface{}) error {
 
 func main() {
 	type Square struct {
-		A	int	`json:"A"`
-		B	int	`json:"B"`
-		C	int	`json:"C"`
-		D	int	`json:"D"`
-		E	int	`json:"E"`
-		F	int	`json:"F"`
-		G	int	`json:"G"`
-		H	int	`json:"H"`
-		I	int	`json:"I"`
+		Id	int	`json:"id"`
+		State	int	`json:"state"`
 	}
 	var board []Square
 	router := mux.NewRouter()
