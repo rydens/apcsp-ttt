@@ -1,10 +1,13 @@
 package main
 
 import (
-	"fmt"
-	"html"
+	"encoding/json"
+	//"fmt"
+	//"html"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"time"
 )
 
 func get_json(url string, target interface{}) error {
@@ -16,26 +19,25 @@ func get_json(url string, target interface{}) error {
 	defer r.Body.Close()
 	return json.NewDecoder(r.Body).Decode(target)
 }
-func create_board() {
-	type Board struct {
-		1	int	`json:"1"`
-		2	int	`json:"2"`
-		3	int	`json:"3"`
-		4	int	`json:"4"`
-		5	int	`json:"5"`
-		6	int	`json:"6"`
-		7	int	`json:"7"`
-		8	int	`json:"8"`
-		9	int	`json:"9"`
-	}
-	
-}
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
-	})
-
-	log.Fatal(http.ListenAndServe(":8080", nil))
-
+	type Square struct {
+		A	int	`json:"A"`
+		B	int	`json:"B"`
+		C	int	`json:"C"`
+		D	int	`json:"D"`
+		E	int	`json:"E"`
+		F	int	`json:"F"`
+		G	int	`json:"G"`
+		H	int	`json:"H"`
+		I	int	`json:"I"`
+	}
+	var board []Square
+	router := mux.NewRouter()
+	func GetBoard(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode(people)
+	}
+	router.HandleFunc("/board", GetBoard).Methods("GET")
+	log.Fatal(http.ListenAndServe(":8000", router))
 }
+
