@@ -1,6 +1,5 @@
 // Necessary modules
-const rl = require('readline-sync')
-const sleep = require('system-sleep')
+const rl = require('readline-sync')   // Allows accepting user input and actually waiting for it.
 
 // Colors for POSIX-compliant terminals
 let green = '\033[0;32m'
@@ -15,72 +14,35 @@ let reset = '\033[0m'
 let clear = '\033[H\033[2J'
 
 // Initializing required variables
-let serverIP
-let serverPort
-let turn = `${cyan}X`
-let logTurn
-let logTaken
-let logOOR
-let logNAO
-let winner = 'none'
-let boardState = []
-let boardChoices = [1,2,3,4,5,6,7,8,9]
-let winConditions = []
+let turn = `${cyan}X` // Switches around to control what gets placed.
+let logTurn           // What to log for the "Turn: " label next to the board
+let logTaken          // Whether or not to log the "Already taken" error
+let logOOR            // Whether or not to log the "Not 1-9" error
+let winner = 'none'   // Will change when there is a winner
+let boardState = []   // Initializing array for the state of each chunk
+let boardChoices = [1,2,3,4,5,6,7,8,9]  // Choices possible; with the "Not 1-9" error
+let winConditions = []     // Initalizing conditions for how the letters must match in order for the game to be won
 
-// Connection prompts
-let getServer = () => {
-  console.log(`Please type your server.`)
-  console.log(`<ip>:<port>`)
-  let server = rl.question('> ')
-  serverIP = server.split(':')[0]
-  serverPort = server.split(':')[1]
-  console.log(`Connecting to ${serverIP}:${serverPort}...`)
-}
 
-// Allows the user to select gamemode (local/one computer or global/server)
-// let modeSelection = () => {
-//   let modeinput
-//   while (modeinput !== 1 || modeinput !== 2) {
-//     console.log(`${clear}Welcome to TIC TAC TOE!`)
-//     console.log(`Select Gamemode:
-// 1) Two Player Local - Play with a friend next to you
-// 2) Two Player Global - Connect to a server and find an opponent`)
-//     if (logNAO) {
-//       console.log(red + '\033[1BNot An Option!\033[2A' + reset)
-//       logNAO = false
-//     }
-//     modeinput = rl.question('> ')
-//     if (modeinput === '1') {
-//       console.log(`You selected Two Player Local!`)
-//       return 'local'
-//     } else if (modeinput === '2') {
-//       console.log('You selected Two Player Global!')
-//       return 'global'
-//     } else {
-//       logNAO = true
-//     }
-//   }
-// }
 
 // Win Checks
 let checkWins = () => {
-  let winMaybe = 'none'
-  let drawCheck = 0
+  winner = 'none'   // Double checks that winner variable is set to right thing at first
+  let drawCheck = 0 
   for (let i = 0; i < winConditions.length; i++) {
     if (winConditions[i][0] !== 0) {
       if (winConditions[i][0] === winConditions[i][1] && winConditions[i][0] === winConditions[i][2] && winConditions[i][0] === 1) {
-        winMaybe = 'x'
+        winner = 'x'
       } else if (winConditions[i][0] === winConditions[i][1] && winConditions[i][0] === winConditions[i][2] && winConditions[i][0] === 2) {
-        winMaybe = 'o'
+        winner = 'o'
       } else if (winConditions[i].indexOf(0) === -1) {
         drawCheck += 1
       }
     }
   }
   if (drawCheck === 8) {
-    winMaybe = 'draw'
+    winner = 'draw'
   }
-  return winMaybe
 }
 
 let board = `
@@ -113,8 +75,6 @@ let numBoard = `
 7 │8 │9
 `
 
-// console.log(board)
-// console.log(`==========================================\n\n`)
 
 let topLeft = [
   `${boldGray}          #\n          #\n          #\n          #\n          #\n###########`,
@@ -182,10 +142,7 @@ let drawBoard = (boardArray) => {
 }
 
 // Main procedure
-// mode = modeSelection()
-
-// Commented out and bypassed because we're not doing the global part for this task.
-mode = 'local'
+mode = 'local'  // Old thing for when I build in global functionality
 if (mode === 'local') {
   boardState = [0,0,0,0,0,0,0,0,0]
   let alreadyTaken = []
@@ -231,19 +188,17 @@ if (mode === 'local') {
     [boardState[0],boardState[4],boardState[8]],
     [boardState[2],boardState[4],boardState[6]]
     ]
-      winner = checkWins()
+      checkWins()
     } else {
       console.log(`\n${yellow}GAME OVER!`)
       if (winner === 'draw') {
         console.log(`${boldRed}DRAW! ${boldGray}Nobody Wins!`)
-        break
       } else if (winner === 'x') {
         console.log(`${boldCyan}X ${boldGray}Wins!`)
-        break
       } else if (winner === `o`) {
         console.log(`${boldGreen}O ${boldGray}Wins!`)
-        break
       }
+      break
     }
   }
 }
